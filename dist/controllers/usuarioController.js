@@ -70,7 +70,7 @@ class UsuarioController {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const email = req.params.email; // Suponiendo que el parámetro de la URL contiene el correo electrónico del usuario a eliminar
+                const email = req.body.email; // Suponiendo que el parámetro de la URL contiene el correo electrónico del usuario a eliminar
                 const existeUsuario = yield usuarioModelo_1.default.getByEmail(email); // Verifica si el usuario existe
                 if (!existeUsuario) {
                     return res.status(404).json({ message: "Usuario no encontrado", code: 1 });

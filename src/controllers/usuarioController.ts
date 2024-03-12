@@ -4,6 +4,7 @@ import usuarioModelo from "../models/usuarioModelo";
 import { utils } from "../utils/utils";
 
 
+
 class UsuarioController {
 
 
@@ -58,7 +59,7 @@ class UsuarioController {
 
   public async delete(req: Request, res: Response) {
     try {
-      const email = req.params.email; // Suponiendo que el parámetro de la URL contiene el correo electrónico del usuario a eliminar
+      const email = req.body.email; // Suponiendo que el parámetro de la URL contiene el correo electrónico del usuario a eliminar
       const existeUsuario = await usuarioModelo.getByEmail(email); // Verifica si el usuario existe
       if (!existeUsuario) {
         return res.status(404).json({ message: "Usuario no encontrado", code: 1 });

@@ -19,7 +19,7 @@ class AuthController {
     
             const lstUsers = await model.getuserByEmail(email);
             if (lstUsers.length <= 0) {
-                return res.status(404).json({ message: "El usuario y/o contraseña es incorrecto", code: 1 });
+                return res.status(404).json({ message: "El correo y/o contraseña es incorrecto", code: 1 });
             }
             
             const hashedPassword = lstUsers[0].password;
@@ -32,7 +32,7 @@ class AuthController {
                 const token = jwt.sign(newUser, process.env.SECRET, { expiresIn: '1h' });
                 return res.json({ message: "Autenticación correcta", token, code: 0 });
             } else {
-                return res.json({ message: "Contraseña incorrecta", code: 1 });
+                return res.json({ message: "El correo y/o contraseña es incorrecto", code: 1 });
             }
         } catch (error: any) {
             return res.status(500).json({ message: `${error.message}` });

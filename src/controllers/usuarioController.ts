@@ -20,6 +20,24 @@ class UsuarioController {
   public async add(req: Request, res: Response) {
     try {
       const usuario = req.body; // Suponiendo que el usuario se envía en el cuerpo de la solicitud
+      
+      if (!usuario.email || !usuario.password) {
+        return res.status(400).json({ message: "Ingresa correo electrónico y contraseña", code: 1 });
+      }
+
+      if (!validator.isEmail(usuario.email)) {
+        return res.status(400).json({ message: "El correo electrónico no es válido", code: 1 });
+      }
+
+      if (!validator.isLength(usuario.password, { min: 6 })) {
+        return res.status(400).json({ message: "La contraseña debe tener al menos 6 caracteres", code: 1 });
+      }
+
+      if (!usuario.role || !usuario.role) {
+        return res.status(400).json({ message: "Ingresa un rol", code: 1 });
+      }
+
+
       const existeUsuario = await usuarioModelo.getByEmail(usuario.email); // Llama al método estático getByEmail
       if (existeUsuario) {
         return res.status(400).json({ message: "Ya existe un usuario con el mismo correo electrónico", code: 1 });

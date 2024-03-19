@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usuarioController = void 0;
+const validator_1 = __importDefault(require("validator"));
 const usuarioModelo_1 = __importDefault(require("../models/usuarioModelo"));
 const utils_1 = require("../utils/utils");
 class UsuarioController {
@@ -30,6 +31,18 @@ class UsuarioController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const usuario = req.body; // Suponiendo que el usuario se envía en el cuerpo de la solicitud
+                if (!usuario.email || !usuario.password) {
+                    return res.status(400).json({ message: "Ingresa correo electrónico y contraseña", code: 1 });
+                }
+                if (!validator_1.default.isEmail(usuario.email)) {
+                    return res.status(400).json({ message: "El correo electrónico no es válido", code: 1 });
+                }
+                if (!validator_1.default.isLength(usuario.password, { min: 6 })) {
+                    return res.status(400).json({ message: "La contraseña debe tener al menos 6 caracteres", code: 1 });
+                }
+                if (!usuario.role || !usuario.role) {
+                    return res.status(400).json({ message: "Ingresa un rol", code: 1 });
+                }
                 const existeUsuario = yield usuarioModelo_1.default.getByEmail(usuario.email); // Llama al método estático getByEmail
                 if (existeUsuario) {
                     return res.status(400).json({ message: "Ya existe un usuario con el mismo correo electrónico", code: 1 });
